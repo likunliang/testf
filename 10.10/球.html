@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+		*{margin: 0;padding: 0;}
+			#bigball{position: absolute;left: 300px;top: 200px;width:60px ;height: 60px;border-radius: 50%;background: red;line-height: 60px;text-align: center;}
+			#smallball{position: absolute;left: 300px;top: 200px;width:30px ;height: 30px;border-radius: 50%;background: blue;line-height: 30px;text-align: center;}
+		</style>
+		<script type="text/javascript">
+			window.onload=function()
+			{
+				var bigball=document.getElementById("bigball");
+				var smallball=document.getElementById("smallball")
+				var step=5;
+				
+				//可视区域
+				var viewwidth=document.documentElement.clientWidth-smallball.offsetWidth;
+				var viewheight=document.documentElement.clientHeight-smallball.offsetHeight;
+				
+				document.onkeydown=function(evt)
+				{
+					smallball=document.getElementById("smallball");//重新赋值
+					evt=evt||window.event;
+					var code=evt.keyCode||evt.which;
+					//alert(step);
+					if(differ<0){}
+					switch(code)
+					{
+						case 37:bigball.style.left=bigball.offsetLeft-step+"px";break;
+						
+						case 38:bigball.style.top=bigball.offsetTop-step+"px";break;
+						case 39:bigball.style.left=bigball.offsetLeft+step+"px";break;
+						case 40:bigball.style.top=bigball.offsetTop+step+"px";break;
+					}
+					
+				bigball.r=bigball.offsetWidth/2;     
+				smallball.r=smallball.offsetWidth/2;
+				
+				//圆心横坐标
+				 bigball.centerX=bigball.offsetLeft+bigball.r;
+				 bigball.centerY=bigball.offsetTop+bigball.r;
+				 
+				 //console.log(bigball.r+ " "+bigball.centerY);
+				 
+				 
+				  smallball.centerX=smallball.offsetLeft+smallball.r;
+				 smallball.centerY=smallball.offsetTop+smallball.r;
+				 
+				 //声明一个变量=两个圆心的直线距离    勾股定理
+				 var distance=Math.pow(bigball.centerX-smallball.centerX,2)+Math.pow(bigball.centerY-smallball.centerY,2);
+				 distance=Math.sqrt(distance);
+				 //console.log(distance);
+				 
+				 var differ=Math.round(distance-bigball.r-smallball.r);
+				 
+				 
+				 console.log(differ);
+				 //处理两个小球约会后，发生了什么事
+				 if(differ<0)
+				 {
+				 	//移除小球
+				 	document.body.removeChild(smallball);
+				 	//改变打球的半径
+				 	bigball.style.width=bigball.style.height=bigball.offsetWidth+step+"px";
+				 	bigball.style.lineHeight=bigball.style.height;
+				 	bigball.innerHTML=bigball.offsetWidth;
+				 	
+				 	//重新生成一个小球，注意ID的唯一性
+				 	setTimeout(function()
+				 	{
+				 		 var ball=document.createElement("div");
+				          ball.id="smallball";
+				          ball.style.left=Math.ceil(Math.random()*viewwidth)+"px";
+				          ball.style.top=Math.ceil(Math.random()*viewheight)+"px";
+				          ball.style.background="#"+Math.floor(Math.random()*16581375).toString(16);
+				          document.body.appendChild(ball);
+				 	},500)
+				
+				 	
+				 }
+				}
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div id="bigball"></div>
+		<div id="smallball"></div>
+	</body>
+</html>
